@@ -9,6 +9,8 @@ from formatter import format_output
 
 TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
 
+app = ApplicationBuilder().token(TOKEN).build()
+
 async def handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         user_text = update.message.text
@@ -32,8 +34,4 @@ async def handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         await update.message.reply_text(f"Error: {str(e)}")
 
-
-app = ApplicationBuilder().token(TOKEN).build()
 app.add_handler(MessageHandler(filters.TEXT, handle))
-
-app.run_polling()
