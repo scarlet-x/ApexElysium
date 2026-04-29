@@ -1,6 +1,7 @@
 import requests
+import os
 
-GEMMA_API_KEY = "YOUR_KEY"
+GEMMA_API_KEY = os.getenv("GEMMA_API_KEY")
 
 def parse_with_gemma(prompt):
     system_prompt = """
