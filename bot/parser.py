@@ -17,11 +17,16 @@ Return ONLY JSON:
  "analysis": ["support","resistance"]
 }
 """
-
+    
     response = client.models.generate_content(
-        model="gemma-4",
-        contents=system_prompt + "\nUser: " + prompt
+        model="gemini-2.0-flash",
+        contents=[
+            {
+                "role": "user",
+                "parts": [{"text": system_prompt + "\nUser: " + prompt}]
+            }
+        ]
     )
-
+    
     text = response.text
     return json.loads(text)
