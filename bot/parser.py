@@ -1,9 +1,12 @@
-import requests
 import os
+import json
+import google.genai as genai
 
 GEMMA_API_KEY = os.getenv("GEMMA_API_KEY")
 
 def parse_with_gemma(prompt):
+    client = genai.Client(api_key=GEMMA_API_KEY)
+    
     system_prompt = """
 Extract trading info from user input.
 
@@ -15,16 +18,10 @@ Return ONLY JSON:
 }
 """
 
-    response = requests.post(
-        "https://generativelanguage.googleapis.com/v1/models/gemma:generateContent?key=" + GEMMA_API_KEY,
-        json={
-            "contents": [{
-                "parts": [{"text": system_prompt + "\nUser: " + prompt}]
-            }]
-        }
+    response = client.models.generate_content(
+        model="gemma-4",
+        contents=system_prompt + "\nUser: " + prompt
     )
 
-    text = response.json()["candidates"][0]["content"]["parts"][0]["text"]
-
-    import json
+    text = response.text
     return json.loads(text)
